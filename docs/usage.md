@@ -39,3 +39,17 @@ print(summary_table)
 4 SCA37_DAB1 R2_GV-04  AAAAT                  15
 5 SCA37_DAB1 R2_GV-05  AAAAT                  12
 6 SCA37_DAB1 R2_GV-06  AAAAT                  12
+
+---
+
+# Summarizing All Loci
+
+This summarizes every locus in your dataset in one step:
+
+```r
+# Summarize all loci at once
+all_loci_summary <- unique(example_re_long_ready$Locus) %>%
+  map_df(~summarize_locus_long(example_re_long_ready, .x))
+
+# Preview results
+head(all_loci_summary)
