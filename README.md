@@ -12,4 +12,4 @@ puretargetR is a lightweight, R toolkit that transforms CSV outputs from TRGT in
 
 This repository includes a small cleaned dataset (`data/example_re_long.csv`) derived from the original PureTarget 2.0 repeat expansion report, publicly accessible here https://downloads.pacbcloud.com/public/dataset/PureTarget2.0/PureTarget-Repeat2.0-Datasets/Repeat2.0_NanobindCoriell_48plex_RevioSRPQ/
 
-This demonstrates the long-format data structure used in `summarize_locus_long()` and related functions.
+This demonstrates the long-format data structure used in `scripts/summarize_locus_long()` and related functions.
