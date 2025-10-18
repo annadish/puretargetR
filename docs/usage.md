@@ -28,3 +28,14 @@ summary_table <- summarize_locus_long(example_re_long_ready, "SCA37_DAB1")
 
 # Print result
 print(summary_table)
+
+# Expected output:
+# A tibble: 6 × 6
+  Locus      Genotype  dominant_motif_allele0 total_repeats_allele0
+  <chr>      <chr>     <chr>                  <dbl>
+1 SCA37_DAB1 R2_GV-01  AAAAT                  15
+2 SCA37_DAB1 R2_GV-02  AAAAT                  15
+3 SCA37_DAB1 R2_GV-03  AAAAT                  15
+4 SCA37_DAB1 R2_GV-04  AAAAT                  15
+5 SCA37_DAB1 R2_GV-05  AAAAT                  12
+6 SCA37_DAB1 R2_GV-06  AAAAT                  12
