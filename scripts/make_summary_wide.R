@@ -1,4 +1,3 @@
-#'
 #' Converts long-format repeat expansion data into a wide summary table
 #' (one row per sample × locus), with standardized column names.
 #'
