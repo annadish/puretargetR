@@ -1,4 +1,4 @@
-#How puretargetR reconstructs motif composition
+# How puretargetR reconstructs motif composition
 
 | Feature                | Description                             | Example                                                  |
 | ---------------------- | --------------------------------------- | -------------------------------------------------------- |
