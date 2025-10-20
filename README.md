@@ -7,23 +7,11 @@ puretargetR is a lightweight, R toolkit that transforms CSV outputs from TRGT in
 - Parses allele-specific motif counts and identifies dominant repeat motifs
 - Enables quick visualization of motif diversity at the cohort-level
 
-# Folder structure
+## Folder structure
 - R/ — Core modular functions (each a clean R file)
+- data/ — Small example dataset
+- docs/ — Usage guide
 - scripts/ — Reproducible scripts that call these functions
-- data/ — Example input/output
-- outputs/ — Figures and tables
-
-TRGT CSVs
-   │
-   ├──▶ make_summary_wide()
-   │        ↓
-   │     df_summary_wide
-   │        ↓
-   ├──▶ make_repeat_summary()
-   ├──▶ make_motif_per_sample()
-   │        ↓
-   ├──▶ make_motif_presence()
-   └──▶ make_diversity()
 
 # Quick Start (no installation needed)
 You can load all core functions directly from GitHub:
