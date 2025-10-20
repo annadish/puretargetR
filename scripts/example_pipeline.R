@@ -1,0 +1,11 @@
+source("R/make_summary_wide.R")
+source("R/make_repeat_summary.R")
+source("R/make_motif_per_sample.R")
+source("R/make_motif_presence.R")
+source("R/make_diversity.R")
+
+df_summary_wide <- make_summary_wide(df_long_clean)
+repeat_summary  <- make_repeat_summary(df_summary_wide)
+motif_objs      <- make_motif_per_sample(df_summary_wide)
+presence_objs   <- make_motif_presence(motif_objs$motif_freq_individual)
+diversity_tbl   <- make_diversity(motif_objs$motif_freq_individual, df_summary_wide)
