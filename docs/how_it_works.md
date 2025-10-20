@@ -7,8 +7,8 @@
 | `motif_counts_allele1` | Same, for the second allele             | `0_0_0_0_0_90_0_0_0`                                     |
 
 Pairing `repeat_unit` with `motif_counts_allele` provides an overview of per-allele motif proportions:
-AAAAG → 11 / 11 = 1.00
-Others → 0 / 11 = 0
+> AAAAG → 11 / 11 = 1.00
+> Others → 0 / 11 = 0
 
 Dominant fraction (~1) → pure, homogeneous repeat 
 Intermediate (0.5–0.9) → mixed or interrupted repeat motifs
