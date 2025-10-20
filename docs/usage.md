@@ -1,15 +1,41 @@
-# Example: Summarizing a PureTarget Locus
+This repository provides a modular R pipeline for analyzing repeat expansion data (e.g., PacBio Repeat Expansion 2.0 panels) across cohorts.
+It converts raw long-format tables into structured summaries, computes per-allele motif composition, motif frequencies, and entropy-based diversity metrics, and generates cohort-level plots.
 
-This example uses the included example dataset (`data/example_re_long.csv`)  
-and the main summarization function (`scripts/summarize_locus_long.R`).
+**puretargetR/**
+├── R/
+│   ├── make_summary_wide.R
+│   ├── make_repeat_summary.R
+│   ├── make_motif_per_sample.R
+│   ├── make_motif_presence.R
+│   ├── make_diversity.R
+│   ├── make_panels.R
+├── scripts/
+│   ├── example_pipeline.R
+│   ├── test_make_repeat_summary.R
+├── data/
+│   ├── example_df_long_clean.tsv
+├── README.md
+└── USAGE.md   ← this file
 
-```r
+# Prerequisits in R:
+
 # Load required packages
-library(dplyr)
-library(stringr)
-library(tidyr)
-library(janitor)
-source("scripts/summarize_locus_long.R")
+install.packages(c(
+  "tidyverse",
+  "janitor",
+  "purrr",
+  "stringr",
+  "dplyr",
+  "tidyr"
+))
+
+# Step 1: Source functions
+source("R/make_summary_wide.R")
+source("R/make_repeat_summary.R")
+source("R/make_motif_per_sample.R")
+source("R/make_motif_presence.R")
+source("R/make_diversity.R")
+
 
 # Load example dataset
 example_re_long <- read.csv("data/example_re_long.csv")
