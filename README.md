@@ -10,6 +10,15 @@ puretargetR is a lightweight, R toolkit that transforms CSV outputs from TRGT in
 - Generates per-sample motif composition summaries
 - Optional visualization functions
 
+# Folder structure
+- R/ — Core modular functions (each a clean R file)
+- scripts/ — Reproducible scripts that call these functions
+- data/ — Example input/output
+- outputs/ — Figures and tables
+
+# License
+This project is released under the MIT License.
+
 # Quick Start (no installation needed)
 You can load all core functions directly from GitHub:
 
@@ -35,13 +44,4 @@ head(df_summary_wide)
 head(repeat_summary)
 head(diversity_tbl)
 
-# License
-This project is released under the MIT License.
 
-
-
-# Folder structure
-- R/ — Core modular functions (each a clean R file)
-- scripts/ — Reproducible scripts that call these functions
-- data/ — Example input/output
-- outputs/ — Figures and tables
