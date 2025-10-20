@@ -6,7 +6,7 @@ It parses allele-specific motif counts and identifies dominant repeat motifs—w
 ## Rationale & Impact
 Repeat expansions are among the most challenging variant types to interpret — especially when alleles differ in length, motif composition, or methylation status. Tools like TRGT can detect these expansions with long-read sequencing, but the resulting CSV files are often dense, unstructured, and difficult to interpret without coding expertise. puretargetR bridges that gap by turning TRGT outputs (PureTarget Report) into immediately usable summaries that highlight allele-specific motif structures, dominant repeat types, and cohort-level diversity — without needing to handle the BAMs.
 
-This toolkit is designed for translational researchers, clinicians, and molecular diagnosticians who want to:
+This toolkit is designed for translational researchers, clinicians, etc. who want to:
 Rapidly visualize and summarize repeat composition per locus and sample
 Compare expansion motifs across individuals or disease groups
 Support diagnostic interpretation or publication-ready figures
