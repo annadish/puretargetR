@@ -1,5 +1,6 @@
 # How puretargetR reconstructs motif composition
 
+## Output from PureTarget report
 | Feature                | Description                             | Example                                                  |
 | ---------------------- | --------------------------------------- | -------------------------------------------------------- |
 | `repeat_unit`          | Ordered list of possible motifs         | `AAGGG:ACAGG:AGGGC:AAGGC:AGAGG:AAAAG:AAAGG:AAGAG:AAAGGG` |
