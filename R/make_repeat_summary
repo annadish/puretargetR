@@ -5,19 +5,24 @@
 #' @param df_summary_wide Tibble with per-sample repeat info (output of make_summary_wide).
 #' @return Tibble with one row per locus × sample × allele.
 #' @export
+
 make_repeat_summary <- function(df_summary_wide) {
-  df_summary_wide %>%
-    pivot_longer(
-      cols = matches("allele[01]$"),
-      names_to = c("metric", "allele"),
-      names_pattern = "(.*)_allele(\\d+)"
-    ) %>%
-    pivot_wider(names_from = metric, values_from = value) %>%
-    mutate(
-      allele = as.integer(allele),
-      repeat_size = as.numeric(consensus_size),
-      read_count = as.numeric(read_count),
-      allele_label = paste0("allele", allele)
-    ) %>%
-    relocate(locus, sample, allele, allele_label, repeat_size, read_count)
+  loci <- unique(df_summary_wide$locus)
+
+  all_loci_summary <- loci %>%
+    purrr::map_df(~{
+      message("Processing ", .x, " ...")
+      df_locus <- df_summary_wide %>% dplyr::filter(locus == .x)
+      
+      tibble(
+        Locus = .x,
+        RepeatUnit = df_locus$repeat_unit[1],
+        Mean_Consensus_A0 = mean(as.numeric(df_locus$consensus_size_a0), na.rm = TRUE),
+        Mean_Consensus_A1 = mean(as.numeric(df_locus$consensus_size_a1), na.rm = TRUE),
+        Mean_ReadCount_A0 = mean(as.numeric(df_locus$read_count_a0), na.rm = TRUE),
+        Mean_ReadCount_A1 = mean(as.numeric(df_locus$read_count_a1), na.rm = TRUE)
+      )
+    })
+
+  all_loci_summary
 }
