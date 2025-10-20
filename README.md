@@ -15,6 +15,21 @@ It parses allele-specific motif counts and identifies dominant repeat motifs—w
 - docs/ — Usage guide
 - scripts/ — Reproducible scripts that call these functions
 
+## Pipeline Overview
+<pre>
+TRGT CSVs
+   │
+   ├──▶ make_summary_wide()
+   │        ↓
+   │     df_summary_wide
+   │        ↓
+   ├──▶ make_repeat_summary()
+   ├──▶ make_motif_per_sample()
+   │        ↓
+   ├──▶ make_motif_presence()
+   └──▶ make_diversity()
+</pre>
+
 ## Outputs
 The pipeline produces:
 - `df_summary_wide` — all repeat-level features per sample
