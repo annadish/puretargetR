@@ -4,12 +4,14 @@ puretargetR is a lightweight, R toolkit that transforms CSV outputs from TRGT in
 # Features
 - Converts PureTarget CSV exports into tidy long-format tables
 - Summarizes per-locus dominant motifs and total repeat counts
+- Motif parsing and frequency analysis
+- Cohort-level summaries and visualization
 - Works across all alleles and loci simultaneously
 - Generates per-sample motif composition summaries
-- Optional visualization functions (forecoming)
+- Optional visualization functions
 
-# Example Dataset
-
-This repository includes a small cleaned dataset (`data/example_re_long.csv`) derived from the original PureTarget 2.0 repeat expansion report, publicly accessible here https://downloads.pacbcloud.com/public/dataset/PureTarget2.0/PureTarget-Repeat2.0-Datasets/Repeat2.0_NanobindCoriell_48plex_RevioSRPQ/
-
-This demonstrates the long-format data structure used in `scripts/summarize_locus_long()` and related functions.
+# Folder structure
+- R/ — Core modular functions (each a clean R file)
+- scripts/ — Reproducible scripts that call these functions
+- data/ — Example input/output
+- outputs/ — Figures and tables
