@@ -1,14 +1,11 @@
 # puretargetR
 puretargetR is a lightweight, R toolkit that transforms CSV outputs from TRGT into summaries of repeat composition across all loci and samples. It parses allele-specific motif counts and identifies dominant repeat motifs—without re-alignment or BAM access, enabling quick visualization of repeat motif diversity at the cohort-level. 
 
-# Features
+## Features
 - Converts PureTarget CSV exports into tidy long-format tables
 - Summarizes per-locus dominant motifs and total repeat counts
-- Motif parsing and frequency analysis
-- Cohort-level summaries and visualization
-- Works across all alleles and loci simultaneously
-- Generates per-sample motif composition summaries
-- Optional visualization functions
+- Parses allele-specific motif counts and identifies dominant repeat motifs
+- Enables quick visualization of motif diversity at the cohort-level
 
 # Folder structure
 - R/ — Core modular functions (each a clean R file)
@@ -16,8 +13,17 @@ puretargetR is a lightweight, R toolkit that transforms CSV outputs from TRGT in
 - data/ — Example input/output
 - outputs/ — Figures and tables
 
-# License
-This project is released under the MIT License.
+TRGT CSVs
+   │
+   ├──▶ make_summary_wide()
+   │        ↓
+   │     df_summary_wide
+   │        ↓
+   ├──▶ make_repeat_summary()
+   ├──▶ make_motif_per_sample()
+   │        ↓
+   ├──▶ make_motif_presence()
+   └──▶ make_diversity()
 
 # Quick Start (no installation needed)
 You can load all core functions directly from GitHub:
@@ -44,4 +50,20 @@ head(df_summary_wide)
 head(repeat_summary)
 head(diversity_tbl)
 
+## Outputs
+The pipeline produces:
+- `df_summary_wide` — all repeat-level features per sample
+- `repeat_summary` — per-allele summary
+- `motif_freq_individual` — motif-level counts and proportions
+- `presence_objs` — motif presence and frequency per cohort
+- `diversity_tbl` — per-allele entropy, dominant motif, and consensus size
+
+## License
+This project is released under the MIT License.
+
+## Citation
+If you use puretargetR in your research, please cite:
+
+> Dias Lab, A. Dischler et al. (2025). *puretargetR: A modular R pipeline for quick allele-resolved repeat and motif diversity analysis.* GitHub Repository.  
+> [https://github.com/annadish/puretargetR](https://github.com/annadish/puretargetR)
 
