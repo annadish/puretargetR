@@ -3,6 +3,14 @@
 puretargetR is a lightweight, R toolkit that transforms CSV outputs from TRGT into summaries of repeat composition across all loci and samples. 
 It parses allele-specific motif counts and identifies dominant repeat motifs—without re-alignment or BAM access, enabling quick visualization of repeat motif diversity at the cohort-level. 
 
+##Why this matters
+Repeat expansions are among the most challenging variant types to interpret — especially when alleles differ in length, motif composition, or methylation status. Tools like TRGT can detect these expansions with long-read sequencing, but the resulting CSV files are often dense, unstructured, and difficult to interpret without coding expertise. puretargetR bridges that gap by turning TRGT outputs (PureTarget Report) into immediately usable summaries that highlight allele-specific motif structures, dominant repeat types, and cohort-level diversity — without needing to handle the BAMs.
+
+This toolkit is designed for translational researchers, clinicians, and molecular diagnosticians who want to:
+Rapidly visualize and summarize repeat composition per locus and sample
+Compare expansion motifs across individuals or disease groups
+Support diagnostic interpretation or publication-ready figures
+
 ## Features
 - Converts PureTarget CSV exports into tidy long-format tables
 - Summarizes per-locus dominant motifs and total repeat counts
