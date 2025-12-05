@@ -33,7 +33,7 @@ This toolkit is designed for translational researchers, clinicians, etc. who wan
 <pre> TRGT CSVs (long format) │ ├──▶ make_summary_wide() │ ↓ df_summary_wide │ ├──▶ classify_motif() ├──▶ classify_inheritance() ├──▶ classify_expansions() ← full analysis (locus + sample calls) │ ├──▶ make_repeat_summary() ├──▶ make_motif_per_sample() ├──▶ make_motif_presence() └──▶ make_diversity() </pre>
 
 ## Outputs
-The pipeline produces structural summaries:
+Structural summaries:
 - `df_summary_wide` — all allele-level features
 - `repeat_summary` — consensus sizes, spans, read counts
 
@@ -42,8 +42,7 @@ Motif-level summaries:
 - `presence_objs` — motif presence & cohort-level motif spectrum
 - `diversity_tbl` — Shannon diversity, motif richness, dominant motif
   
-Expansion classifier summaries (NEW):
-- The classify_expansions() wrapper performs full allele → locus → sample interpretation and returns a list with:
+Expansion classifier summaries (NEW): The classify_expansions() wrapper performs full allele → locus → sample interpretation and returns a list with:
 -  allele_calls (one row per allele including: motif count, motif class, allele status, and inheritance model)
 -  locus_calls (one row per sample/locus)
 -  sample_calls (summary of expansion type per sample)
