@@ -24,32 +24,77 @@ This toolkit is designed for translational researchers, clinicians, etc. who wan
 - Enables rapid visualization of cohort-level comparisons
 
 ## Folder structure
-- R/ — Core modular functions 
-- data/ — Small example dataset (example_re_long.csv)
-- docs/ — Usage guide
-- scripts/ — Reproducible standalone workflows
-  
+- `R/` — Core modular functions  
+- `data/` — Small example dataset  
+- `docs/` — Usage guide  
+- `scripts/` — Reproducible scripts that call these functions  
+
 ## Pipeline Overview
-<pre> 
-TRGT CSVs (long format) │ ├──▶ make_summary_wide() │ ↓ df_summary_wide │ ├──▶ classify_motif() ├──▶ classify_inheritance() ├──▶ classify_expansions() ← full analysis (locus + sample calls) │ ├──▶ make_repeat_summary() ├──▶ make_motif_per_sample() ├──▶ make_motif_presence() └──▶ make_diversity() 
+<pre>
+TRGT CSVs
+   │
+   ├──▶ make_summary_wide()
+   │        ↓
+   │     df_summary_wide
+   │        ↓
+   ├──▶ classify_motif()
+   ├──▶ classify_inheritance()
+   ├──▶ classify_expansions()    ← full expansion classifier
+   │
+   ├──▶ make_repeat_summary()
+   ├──▶ make_motif_per_sample()
+   ├──▶ make_motif_presence()
+   └──▶ make_diversity()
 </pre>
 
 ## Outputs
-Structural summaries:
-- `df_summary_wide` — all allele-level features
-- `repeat_summary` — consensus sizes, spans, read counts
+The pipeline produces:
 
-Motif-level summaries:
-- `motif_freq_individual` — motif counts/frequencies per sample
-- `presence_objs` — motif presence & cohort-level motif spectrum
-- `diversity_tbl` — Shannon diversity, motif richness, dominant motif
-  
-Expansion classifier summaries (NEW): 
--  allele_calls (one row per allele including: motif count, motif class, allele status, and inheritance model)
--  locus_calls (one row per sample/locus)
--  sample_calls (summary of expansion type per sample)
--  locus_summary (cohort-level counts per locus)
-  
+### **Structural summaries**
+- `df_summary_wide` — all allele-level features  
+- `repeat_summary` — consensus sizes, spans, read counts  
+
+### **Motif-level summaries**
+- `motif_freq_individual` — motif counts/frequencies per sample  
+- `presence_objs` — motif presence & cohort-level motif spectrum  
+- `diversity_tbl` — Shannon diversity, motif richness, dominant motif  
+
+---
+
+### **Expansion classifier outputs (NEW)**  
+The `classify_expansions()` wrapper performs full allele → locus → sample interpretation and returns a list with:
+
+#### **1. `allele_calls`**  
+One row per allele, including:  
+- motif count  
+- motif class (canonical / rare / mixed)  
+- allele_status (normal / intermediate / premutation / pathogenic)  
+- inheritance model  
+
+#### **2. `locus_calls`**  
+One row per sample × locus, providing inheritance-aware interpretation:  
+- **affected (AR, biallelic)** — two pathogenic alleles  
+- **carrier (AR)** — one pathogenic allele  
+- **affected/carrier (AD)** — one or more pathogenic alleles  
+- **affected (XLD)** — pathogenic allele on X chromosome  
+- **carrier (XLR)** — heterozygous female carrier  
+- **normal** — no pathogenic alleles  
+
+#### **3. `sample_calls`**  
+One row per sample, summarizing overall expansion status:  
+- `has_reportable_expansion`  
+- `carrier_only`  
+- `all_normal`  
+
+#### **4. `locus_summary`**  
+Cohort-level counts of individuals with expansions or carriers per locus:
+- number of AR affected  
+- number of AR carriers  
+- number of AD expansions  
+- number of X-linked affected / carriers  
+
+---
+
 ## License
 This project is released under the MIT License.
 
@@ -57,66 +102,29 @@ This project is released under the MIT License.
 If you use puretargetR in your research, please cite:
 
 > Dias Lab, A. Dischler et al. (2025). *puretargetR: A modular R pipeline for quick allele-resolved repeat and motif diversity analysis.* GitHub Repository.  
-> [https://github.com/annadish/puretargetR](https://github.com/annadish/puretargetR)
+> https://github.com/annadish/puretargetR
 
 ## Quick Start (no installation needed)
-You can load all core functions directly from GitHub:
-
 ```r
-# ===============================================================
-# Install + Load PureTargetR
-# ===============================================================
-
-install.packages("devtools")   # run once
+install.packages("devtools")
 library(devtools)
 
-# Load all PureTargetR functions from GitHub
 source_url("https://raw.githubusercontent.com/annadish/puretargetR/main/R/load_pipeline.R")
 load_puretargetR_pipeline()
-
-# ===============================================================
-# Load example PureTarget TRGT dataset
-# ===============================================================
 
 df_long_clean <- readr::read_csv(
   "https://raw.githubusercontent.com/annadish/puretargetR/main/data/example_re_long.csv"
 )
 
-# Inspect structure
-dplyr::glimpse(df_long_clean)
-
-# ===============================================================
-# Run PureTargetR core pipeline
-# ===============================================================
-
-# 1. Convert to wide format (allele-level summary)
 df_summary_wide <- make_summary_wide(df_long_clean)
+repeat_summary  <- make_repeat_summary(df_summary_wide)
+motif_objs      <- make_motif_per_sample(df_summary_wide)
+presence_objs   <- make_motif_presence(motif_objs$motif_freq_individual)
+diversity_tbl   <- make_diversity(motif_objs$motif_freq_individual, df_summary_wide)
 
-# 2. Compute repeat-level features
-repeat_summary <- make_repeat_summary(df_summary_wide)
-
-# 3. Motif-level summaries
-motif_objs    <- make_motif_per_sample(df_summary_wide)
-presence_objs <- make_motif_presence(motif_objs$motif_freq_individual)
-
-# 4. Motif diversity by locus/sample
-diversity_tbl <- make_diversity(
-  motif_objs$motif_freq_individual,
-  df_summary_wide
-)
-
-# 5. Full expansion classifier (motif + inheritance + pathogenicity)
 expansion_results <- classify_expansions(df_summary_wide)
-
-# ===============================================================
-# View results
-# ===============================================================
 
 head(expansion_results$allele_calls)
 head(expansion_results$locus_calls)
 head(expansion_results$sample_calls)
 expansion_results$locus_summary
-
-head(df_summary_wide)
-head(repeat_summary)
-head(diversity_tbl)
