@@ -1,13 +1,26 @@
-#' make_motif_per_sample
+#' Expand allele-level repeat-unit strings into per-motif counts
 #'
-#' Expand motif count data into a long table per sample and allele,
-#' harmonizing motif and count lengths and computing motif proportions.
+#' This function takes the wide-format table produced by `make_summary_wide()`
+#' and expands each allele into a long-form table listing every motif and its
+#' corresponding count. TRGT often reports multiple motif types per allele
+#' (e.g. AAAGG and AAGGG), and this function harmonizes motif and count
+#' vectors to ensure they remain aligned.
 #'
-#' @param df_summary_wide A tibble with columns:
-#'   locus, sample, repeat_unit, motif_counts_allele0, motif_counts_allele1.
+#' The output includes:
+#'   • `motif_counts_long` — one row per sample × locus × allele × motif
+#'       (with raw motif counts)
+#'   • `motif_freq_individual` — same structure but with per-allele proportions
+#'
+#' This table is the backbone for motif diversity analysis and motif
+#' presence/absence matrices.
+#'
+#' @param df_summary_wide A tibble from `make_summary_wide()` containing:
+#'   locus, sample, repeat_unit, motif_counts_allele0, motif_counts_allele1
+#'
 #' @return A list with:
 #'   - motif_counts_long: long-format motif counts
-#'   - motif_freq_individual: long-format motif proportions per sample × allele
+#'   - motif_freq_individual: long-format motif proportions
+#'
 #' @export
 
 make_motif_per_sample <- function(df_summary_wide) {
