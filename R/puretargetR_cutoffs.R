@@ -13,7 +13,12 @@
 #'   - pathogenic expansions
 #'
 #' The table also includes each locus’s inheritance model
-#' (AD, AR, XLD, XLR, XD).
+#' (AD, AR, XLD, XLR, XD):
+#'   - "AD": Autosomal dominant (one pathogenic allele sufficient)
+#'   - "AR": Autosomal recessive (two pathogenic alleles required; one = carrier)
+#'   - "XLD": X-linked dominant
+#'   - "XLR": X-linked recessive (typically carrier in females, affected in males)
+#'   - "XD": X-linked disorder with structured repeat ranges (e.g., FMR1)
 #'
 #' @return A tibble containing one row per locus with columns:
 #'   locus, normal_max, intermediate_min, intermediate_max,
