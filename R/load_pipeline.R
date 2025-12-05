@@ -33,6 +33,7 @@ load_puretargetR_pipeline <- function(branch = "main") {
   # NEW: Classification + Cohort Summary modules
   # ---------------------------------------------------------------
   classifier_scripts <- c(
+    "puretargetR_cutoffs.R",
     "classify_motif.R",
     "classify_inheritance.R",
     "classify_expansions.R",
