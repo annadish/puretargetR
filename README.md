@@ -13,10 +13,7 @@ puretargetR bridges that gap by turning TRGT PureTarget Reports into clean, anal
  - pathogenic vs normal vs intermediate vs premutation alleles
  - inheritance-aware sample classifications 
    
-This toolkit is designed for translational researchers, clinicians, etc. who want to:
-Rapidly visualize and summarize repeat composition per locus and sample
-Compare expansion motifs across individuals or disease groups
-Support diagnostic interpretation or publication-ready figures
+This toolkit is designed for translational researchers, clinicians, etc. who want to rapidly visualize/summarize repeat composition per locus/sample, compare expansion motifs across individuals or disease groups, and create figures.
 
 ## Features
 - Converts PureTarget CSV exports into tidy long- and wide-format tables
