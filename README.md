@@ -63,63 +63,56 @@ You can load all core functions directly from GitHub:
 # Install + Load PureTargetR
 # ===============================================================
 
-install.packages("devtools")       # only needed once
+install.packages("devtools")   # run once
 library(devtools)
 
-# Load all functions directly from GitHub
+# Load all PureTargetR functions from GitHub
 source_url("https://raw.githubusercontent.com/annadish/puretargetR/main/R/load_pipeline.R")
 load_puretargetR_pipeline()
 
 # ===============================================================
-# Load example dataset
+# Load example PureTarget TRGT dataset
 # ===============================================================
 
-# Long-format PureTarget TRGT output (example dataset)
-df_long_clean <- readr::read_tsv(
-  "https://raw.githubusercontent.com/annadish/puretargetR/main/data/example_df_long_clean.tsv"
+df_long_clean <- readr::read_csv(
+  "https://raw.githubusercontent.com/annadish/puretargetR/main/data/example_re_long.csv"
 )
 
+# Inspect structure
+dplyr::glimpse(df_long_clean)
+
 # ===============================================================
-# Run the PureTargetR analysis workflow
+# Run PureTargetR core pipeline
 # ===============================================================
 
-# 1. Convert to wide format (allele-level summaries)
+# 1. Convert to wide format (allele-level summary)
 df_summary_wide <- make_summary_wide(df_long_clean)
 
-# 2. Add high-level repeat summaries (consensus size, spans, read counts)
-repeat_summary  <- make_repeat_summary(df_summary_wide)
+# 2. Compute repeat-level features
+repeat_summary <- make_repeat_summary(df_summary_wide)
 
-# 3. Motif summaries
-motif_objs      <- make_motif_per_sample(df_summary_wide)
-presence_objs   <- make_motif_presence(motif_objs$motif_freq_individual)
+# 3. Motif-level summaries
+motif_objs    <- make_motif_per_sample(df_summary_wide)
+presence_objs <- make_motif_presence(motif_objs$motif_freq_individual)
 
-# 4. Motif diversity per sample / per locus
-diversity_tbl   <- make_diversity(
+# 4. Motif diversity by locus/sample
+diversity_tbl <- make_diversity(
   motif_objs$motif_freq_individual,
   df_summary_wide
 )
 
-# 5. Run full expansion classifier (motif + inheritance + pathogenicity)
+# 5. Full expansion classifier (motif + inheritance + pathogenicity)
 expansion_results <- classify_expansions(df_summary_wide)
 
 # ===============================================================
-# Inspect example results
+# View results
 # ===============================================================
 
-# Allele-level genotype calls
 head(expansion_results$allele_calls)
-
-# Per-locus interpretation for each sample
 head(expansion_results$locus_calls)
-
-# Sample-level summary (carrier, normal, expansion)
 head(expansion_results$sample_calls)
-
-# Locus-level summary across the cohort
 expansion_results$locus_summary
 
-# Other helper summaries
 head(df_summary_wide)
 head(repeat_summary)
 head(diversity_tbl)
-
