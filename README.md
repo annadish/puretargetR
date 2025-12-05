@@ -42,12 +42,12 @@ Motif-level summaries:
 - `presence_objs` — motif presence & cohort-level motif spectrum
 - `diversity_tbl` — Shannon diversity, motif richness, dominant motif
   
-Expansion classifier outputs (NEW)
-The classify_expansions() wrapper performs full allele → locus → sample interpretation and returns a list with:
-- allele_calls (one row per allele including: motif count, motif class, allele status, and inheritance model)
-- locus_calls (one row per sample/locus)
-- sample_calls (summary of expansion type per sample)
-- locus_summary (cohort-level counts per locus)
+Expansion classifier summaries (NEW):
+- The classify_expansions() wrapper performs full allele → locus → sample interpretation and returns a list with:
+-  allele_calls (one row per allele including: motif count, motif class, allele status, and inheritance model)
+-  locus_calls (one row per sample/locus)
+-  sample_calls (summary of expansion type per sample)
+-  locus_summary (cohort-level counts per locus)
   
 ## License
 This project is released under the MIT License.
