@@ -1,28 +1,54 @@
-#' make_repeat_summary
+#' Summarize repeat-length statistics per locus
 #'
-#' Converts wide summary data into an allele-level repeat summary table.
+#' This function collapses the wide-format table produced by
+#' `make_summary_wide()` into a locus-level summary of consensus sizes
+#' and read depths across all samples. It reports mean repeat size for
+#' each allele, mean read depth per allele, and optionally min/max
+#' values depending on the implementation.
 #'
-#' @param df_summary_wide Tibble with per-sample repeat info (output of make_summary_wide).
-#' @return Tibble with one row per locus × sample × allele.
+#' @param df_summary_wide Tibble containing allele-level repeat summaries
+#'   (output of `make_summary_wide()`).
+#'
+#' @return A tibble where each row corresponds to one locus and includes:
+#'   \itemize{
+#'     \item \code{RepeatUnit} — the observed repeat-unit string
+#'     \item \code{Mean_Consensus_A0}, \code{Mean_Consensus_A1}
+#'     \item \code{Mean_Read_A0}, \code{Mean_Read_A1}
+#'     \item Optional variability metrics (SD, min/max)
+#'   }
+#'
 #' @export
 
 make_repeat_summary <- function(df_summary_wide) {
-  loci <- unique(df_summary_wide$locus)
 
-  all_loci_summary <- loci %>%
-    purrr::map_df(~{
-      message("Processing ", .x, " ...")
-      df_locus <- df_summary_wide %>% dplyr::filter(locus == .x)
+  df_summary_wide %>%
+    mutate(
+      Consensus_A0 = as.numeric(consensus_size_a0),
+      Consensus_A1 = as.numeric(consensus_size_a1),
+      Read_A0 = as.numeric(read_count_a0),
+      Read_A1 = as.numeric(read_count_a1)
+    ) %>%
+    group_by(locus) %>%
+    summarise(
+      RepeatUnit = first(repeat_unit),
       
-      tibble(
-        Locus = .x,
-        RepeatUnit = df_locus$repeat_unit[1],
-        Mean_Consensus_A0 = mean(as.numeric(df_locus$consensus_size_a0), na.rm = TRUE),
-        Mean_Consensus_A1 = mean(as.numeric(df_locus$consensus_size_a1), na.rm = TRUE),
-        Mean_ReadCount_A0 = mean(as.numeric(df_locus$read_count_a0), na.rm = TRUE),
-        Mean_ReadCount_A1 = mean(as.numeric(df_locus$read_count_a1), na.rm = TRUE)
-      )
-    })
+      # Sample counts
+      n_samples = n(),
+      
+      # Consensus size statistics
+      Mean_Consensus_A0 = mean(Consensus_A0, na.rm = TRUE),
+      SD_Consensus_A0 = sd(Consensus_A0, na.rm = TRUE),
+      Mean_Consensus_A1 = mean(Consensus_A1, na.rm = TRUE),
+      SD_Consensus_A1 = sd(Consensus_A1, na.rm = TRUE),
 
-  all_loci_summary
+      # Read depth statistics
+      Mean_Read_A0 = mean(Read_A0, na.rm = TRUE),
+      Mean_Read_A1 = mean(Read_A1, na.rm = TRUE),
+      
+      # Min/max
+      Min_Consensus = min(c(Consensus_A0, Consensus_A1), na.rm = TRUE),
+      Max_Consensus = max(c(Consensus_A0, Consensus_A1), na.rm = TRUE),
+
+      .groups = "drop"
+    )
 }
