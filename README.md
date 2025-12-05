@@ -1,51 +1,57 @@
 # puretargetR <img src="https://img.shields.io/badge/made%20with-R-blue.svg"> <img src="https://img.shields.io/badge/license-MIT-green"> <img src="https://img.shields.io/badge/version-v0.1.0-lightgrey">
 
 puretargetR is a lightweight, R toolkit that transforms CSV outputs from TRGT into summaries of repeat composition across all loci and samples. 
-It parses allele-specific motif counts and identifies dominant repeat motifs—without re-alignment or BAM access, enabling quick visualization of repeat motif diversity at the cohort-level. 
+It parses allele-specific motif counts, identifies dominant repeat motifs, and includes inheritance-aware repeat expansion classification - all without re-alignment or BAM file access. puretargetR enables quick visualization of repeat motif diversity at the cohort-level. 
 
 ## Rationale & Impact
-Repeat expansions are among the most challenging variant types to interpret — especially when alleles differ in length, motif composition, or methylation status. Tools like TRGT can detect these expansions with long-read sequencing, but the resulting CSV files are often dense, unstructured, and difficult to interpret without coding expertise. puretargetR bridges that gap by turning TRGT outputs (PureTarget Report) into immediately usable summaries that highlight allele-specific motif structures, dominant repeat types, and cohort-level diversity — without needing to handle the BAMs.
+Repeat expansions are among the most challenging variant types to interpret — especially when alleles differ in length, motif composition, or methylation status. TRGT detects these expansions using long-read sequencing data, but the resulting CSV files are often dense and difficult to interpret without coding expertise. 
 
+puretargetR bridges that gap by turning TRGT PureTarget Reports into clean, analysis ready summaries that highlight:
+ - allele specific repeat structure
+ - dominant and rare motifs
+ - motif diversity within and across individuals
+ - pathogenic vs normal vs intermediate vs premutation alleles
+ - inheritance-aware sample classifications 
+   
 This toolkit is designed for translational researchers, clinicians, etc. who want to:
 Rapidly visualize and summarize repeat composition per locus and sample
 Compare expansion motifs across individuals or disease groups
 Support diagnostic interpretation or publication-ready figures
 
 ## Features
-- Converts PureTarget CSV exports into tidy long-format tables
+- Converts PureTarget CSV exports into tidy long- and wide-format tables
 - Summarizes per-locus dominant motifs and total repeat counts
-- Parses allele-specific motif counts and identifies dominant repeat motifs
-- Enables quick visualization of motif diversity at the cohort-level
+- Identifies the canonical (modal) motif per locus and identifies rare motifs
+- Generates motif presence/absence matrices and diversity metrics
+- Includes an expansion classifier (AD/AR/XLD/XLR/XD) (autosomal dominant/recessive, X-linked. etc.)
+- Enables rapid visualization of cohort-level comparisons
 
 ## Folder structure
-- R/ — Core modular functions (each a clean R file)
-- data/ — Small example dataset
+- R/ — Core modular functions 
+- data/ — Small example dataset (example_re_long.csv)
 - docs/ — Usage guide
-- scripts/ — Reproducible scripts that call these functions
-
+- scripts/ — Reproducible standalone workflows
+  
 ## Pipeline Overview
-<pre>
-TRGT CSVs
-   │
-   ├──▶ make_summary_wide()
-   │        ↓
-   │     df_summary_wide
-   │        ↓
-   ├──▶ make_repeat_summary()
-   ├──▶ make_motif_per_sample()
-   │        ↓
-   ├──▶ make_motif_presence()
-   └──▶ make_diversity()
-</pre>
+<pre> TRGT CSVs (long format) │ ├──▶ make_summary_wide() │ ↓ df_summary_wide │ ├──▶ classify_motif() ├──▶ classify_inheritance() ├──▶ classify_expansions() ← full analysis (locus + sample calls) │ ├──▶ make_repeat_summary() ├──▶ make_motif_per_sample() ├──▶ make_motif_presence() └──▶ make_diversity() </pre>
 
 ## Outputs
-The pipeline produces:
-- `df_summary_wide` — all repeat-level features per sample
-- `repeat_summary` — per-allele summary
-- `motif_freq_individual` — motif-level counts and proportions
-- `presence_objs` — motif presence and frequency per cohort
-- `diversity_tbl` — per-allele entropy, dominant motif, and consensus size
+The pipeline produces structural summaries:
+- `df_summary_wide` — all allele-level features
+- `repeat_summary` — consensus sizes, spans, read counts
 
+Motif-level summaries:
+- `motif_freq_individual` — motif counts/frequencies per sample
+- `presence_objs` — motif presence & cohort-level motif spectrum
+- `diversity_tbl` — Shannon diversity, motif richness, dominant motif
+  
+Expansion classifier outputs (NEW)
+The classify_expansions() wrapper performs full allele → locus → sample interpretation and returns a list with:
+- allele_calls (one row per allele including: motif count, motif class, allele status, and inheritance model)
+- locus_calls (one row per sample/locus)
+- sample_calls (summary of expansion type per sample)
+- locus_summary (cohort-level counts per locus)
+  
 ## License
 This project is released under the MIT License.
 
