@@ -1,13 +1,21 @@
-#' Summarizes motif occurrence and frequency across samples and alleles.
+#' Compute cohort-level motif presence and frequency summaries
 #'
-#' @param motif_freq_individual Tibble containing columns locus, sample, allele, motif, proportion.
+#' This function takes the long-format motif table produced by
+#' `make_motif_per_sample()` and summarizes how often each motif occurs
+#' across samples, both overall and per allele. It also constructs a
+#' wide-format allele comparison table and identifies rare motifs and
+#' the samples that carry them.
+#'
+#' @param motif_freq_individual A tibble containing at least the columns:
+#'   \code{locus}, \code{sample}, \code{allele}, \code{motif}, \code{proportion}.
+#'   This is the output \code{$motif_freq_individual} from `make_motif_per_sample()`.
+#'
 #' @return A list of four tibbles:
-#'   \itemize{
-#'     \item motif_presence - overall motif frequencies (sample-level)
-#'     \item motif_presence_by_allele - per-allele motif frequencies
-#'     \item motif_freq_wide - allele comparison (wide format)
-#'     \item rare_motif_samples - list of samples carrying rare motifs
-#'   }
+#'   \item{\code{motif_presence}}{Motif presence frequency per locus (sample-level).}
+#'   \item{\code{motif_presence_by_allele}}{Motif presence frequency per allele (0/1).}
+#'   \item{\code{motif_freq_wide}}{Wide-format table comparing allele_0 vs allele_1 frequencies.}
+#'   \item{\code{rare_motif_samples}}{Sorted list of motifs with the samples in which they occur.}
+#'
 #' @export
 
 make_motif_presence <- function(motif_freq_individual) {
